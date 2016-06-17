@@ -9,7 +9,7 @@
   </tr>
     {% for produto in produtos %}
         <tr>
-            <td><a href="{% url 'exibirproduto' produto.id %}"> {{ produto.descricao | upper }}</a></td>
+            <td><a href=""> {{ produto.descricao | upper }}</a></td>
             <td>{{ produto.unidade.sigla }}</td>
             <td>{{ produto.valorUnitario | floatformat:2 }}</td>
         </tr>
