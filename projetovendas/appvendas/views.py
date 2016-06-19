@@ -23,3 +23,23 @@ def listarvendas(request):
     vendas=Venda.objects.all()
     lista={'vendas':vendas}
     return render(request,'vendas.html',lista)
+def listarclientes(request):
+    clientes=Cliente.objects.all().order_by('nome')
+    lista={'clientes':clientes}
+    return render(request,'clientes.html',lista)
+def exibircliente(request,idcliente):
+    cliente=Cliente.objects.get(id=idcliente)
+    contexto={'cliente':cliente}
+    return render(request,'exibircliente.html',contexto)
+def listarcargos(request):
+    cargos=Cargo.objects.all().order_by('descricao')
+    lista={'cargos':cargos}
+    return render(request,'cargos.html',lista)
+def listarfuncionrios(request):
+    funcionarios=Funcionario.objects.all().order_by('nome')
+    lista={'funcionarios':funcionarios}
+    return render(request,'funcionarios.html',lista)
+def exibirfuncionario(request,idfuncionario):
+    funcionario=Funcionario.objects.get(id=idfuncionario)
+    contexto={'funcionario':funcionario}
+    return render(request,'exibirfuncionario.html',contexto)

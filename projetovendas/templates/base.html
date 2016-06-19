@@ -13,12 +13,12 @@
     <h2>Sistema de Vendas</h2>
     <nav>
         <a href="{% url 'unidades' %}"> Unidades </a>
-        <a href="#"> Cargos</a>
+        <a href="{% url 'cargos' %}"> Cargos</a>
         <a href="{% url 'produtos' %}"> Produtos</a>
-        <a href="#"> Clientes</a>
-        <a href="#"> Funcionários</a>
+        <a href="{% url 'clientes' %}"> Clientes</a>
+        <a href="{% url 'funcionarios' %}"> Funcionários</a>
         <a href="{% url 'vendas' %}"> Vendas</a>
-        <a href="#"> Cadastros</a>
+        <a href="{% url 'admin:index' %}"> Cadastros</a>
     </nav>
     {% block conteudo %}
         <h3>Bem vindo ao sistema de controle de vendas</h3>
