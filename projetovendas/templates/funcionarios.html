@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+    <h2>Funcionários</h2>
+<table>
+  <tr>
+    <th>Nome</th>
+    <th>E-mail</th>
+  </tr>
+    {% for funcionario in funcionarios %}
+        <tr>
+            <td><a href="{% url 'exibirfuncionario' funcionario.id %}"> {{ funcionario.nome | upper }}</a></td>
+            <td>{{ funcionario.email }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

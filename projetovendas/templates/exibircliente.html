@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+    <h2>Dados do Cliente</h2>
+    <ul>
+    <li>Nome: {{ cliente.nome|upper }}</li>
+     <li>E-mail: {{ cliente.email }}</li>
+    <li>Telefone: {{ cliente.telefone }}</li>
+    <li>Endereço: {{ cliente.endereco }} </li>
+    </ul>
+{% endblock %}

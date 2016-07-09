@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+    <h2>Dados do Funcionário</h2>
+    <ul>
+        <li>Nome: {{ funcionario.nome|upper }}</li>
+        <li>Matrícula: {{ funcionario.matricula }}</li>
+        <li>E-mail: {{ funcionario.email }}</li>
+        <li>Telefone: {{ funcionario.telefone }}</li>
+        <li>Cargo: {{ funcionario.cargo|upper }} </li>
+    </ul>
+{% endblock %}

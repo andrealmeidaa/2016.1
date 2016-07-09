@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+    <h2>Cargos</h2>
+<table>
+  <tr>
+    <th>Descrição</th>
+  </tr>
+    {% for cargo in cargos %}
+        <tr>
+            <td> {{ cargo.descricao | upper }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
