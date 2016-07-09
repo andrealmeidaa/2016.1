@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<h2>Materias Primas</h2>
+<table>
+  <tr>
+    <th>Descrição</th>
+      <th>Unidade</th>
+      <th>Quantidade</th>
+      <th>Custo</th>
+  </tr>
+    {% for materiaPrima in materias %}
+        <tr>
+            <td>{{ materiaPrima.descricao }}</td>
+            <td>{{ materiaPrima.unidade }}</td>
+            <td>{{ materiaPrima.quantidadeEstoque }}</td>
+            <td>{{ materiaPrima.custoAquisicao }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

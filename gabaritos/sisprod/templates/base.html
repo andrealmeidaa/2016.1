@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão Simplificada de Unidades Produtivas</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    {% load staticfiles %}
+</head>
+<body>
+    <h2>Gestão Simplificada de Unidades Produtivas</h2>
+    <nav>
+        <a href="{% url 'prestador' %}"> Prestadores de Serviços</a>
+        <a href="{% url 'materiaprima' %}"> Materias Primas</a>
+        <a href="{% url 'processo' %}"> Processo de Produção </a>
+
+
+
+    </nav>
+    {% block conteudo %}
+        <h3>Bem vindo ao Sistema de Gestão Simplificada de Unidades Produtivas</h3>
+
+    {% endblock %}
+ <img src="{% static 'img/Logo.png' %}" width="746" height="282">
+</body>
+</html>

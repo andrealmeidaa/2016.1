@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<h2>Processos de Produção</h2>
+<table>
+
+{% for processo in processos %}
+
+    <tr><td>Processo : {{ processo.descricao }}
+        <br> Data de Início : {{ processo.dataInicio | date:'d/m/Y' }}
+        <br> Custo: {{ processo.custoTotal }}</td></tr>
+    <tr>
+    <td>
+        Prestadores <br>
+        <ul>
+        {% for prestador in processo.prestadores.all %}
+
+            <li>{{ prestador.nome }}</li>
+
+        {% endfor  %}
+        </ul>
+    </td>
+    </tr>
+    <tr>
+    <td>
+        {% for etapa in processo.etapa_set.all %}
+
+            Etapa - {{ etapa.descricao }}<br>
+
+            <table>
+                <tr>
+                    <th>Matéria-Prima</th>
+                    <th>Quantidade Usada</th>
+                    <th>Custo Aquisição</th>
+                    <th>Subtotal</th>
+                 </tr>
+                    {% for etapamateria in etapa.etapamateria_set.all %}
+                        <tr>
+                        <td>{{ etapamateria.materiaPrima.descricao }}</td>
+                        <td>{{ etapamateria.quantidade  }}</td>
+                        <td>{{ etapamateria.subtotal }}</td>
+                        </tr>
+                    {% endfor  %}
+               <tr><td colspan="3">Total da Etapa:</td><td>{{ etapa.custoEtapa }}</td></tr>
+            </table>
+
+        {% endfor  %}
+
+    </td>
+    </tr>
+
+{% endfor %}
+
+</table>
+{% endblock %}
