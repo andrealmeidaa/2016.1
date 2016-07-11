@@ -8,6 +8,10 @@
             border: 1px solid black;
         }
     </style>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" rel="script">
+
     {% load staticfiles %}
 </head>
 <body>
@@ -16,6 +20,7 @@
         <a href="{% url 'prestador' %}"> Prestadores de Serviços</a>
         <a href="{% url 'materiaprima' %}"> Materias Primas</a>
         <a href="{% url 'processo' %}"> Processo de Produção </a>
+        <a href="{%  url 'cargo' %}">Cargos</a>
 
 
 

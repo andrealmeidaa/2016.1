@@ -5,4 +5,5 @@ urlpatterns = [
     url(r'materiaprima/$',exibirMateriaPrima,name='materiaprima'),
     url(r'^prestadores/$',exibirPrestadores,name='prestador'),
     url(r'^processos/$',exibirProcesso,name='processo'),
+    url(r'^cargos/$',CargoView.as_view(),name='cargo'),
 ]

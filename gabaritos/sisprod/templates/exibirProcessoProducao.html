@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block conteudo %}
 <h2>Processos de Produção</h2>
-<table>
+<table class="table table-hover">
 
 {% for processo in processos %}
 
@@ -26,7 +26,7 @@
 
             Etapa - {{ etapa.descricao }}<br>
 
-            <table>
+            <table class="table table-hover">
                 <tr>
                     <th>Matéria-Prima</th>
                     <th>Quantidade Usada</th>
