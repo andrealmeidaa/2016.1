@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+
+    {% if messages %}
+        {% for mensagem in messages %}
+
+            <div class="alert alert-danger" role="alert">{{ mensagem}}</div>
+        {% endfor %}
+
+    {% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <p>Você Deseja Deletar {{ object.descricao }}?</p>
+    <input type="submit" class="btn btn-danger" value="Sim" />
+    <a href="{% url 'cargos' %}">Não</a>
+</form>
+
+{% endblock %}

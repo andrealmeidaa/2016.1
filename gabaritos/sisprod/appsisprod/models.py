@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.urlresolvers import reverse
 # Create your models here.
 
 class Unidade(models.Model):
@@ -22,6 +22,14 @@ class Cargo(models.Model):
     salario=models.DecimalField("Salário",max_digits=10,decimal_places=2)
     def __str__(self):
         return self.descricao
+
+    def get_absolute_url(self):
+        return reverse('cargos-update',kwargs={'pk':self.pk})
+
+    class Meta:
+        ordering=['descricao']
+        verbose_name=['Cargo']
+        verbose_name_plural=['Cargos']
 
 class PrestadorServico(models.Model):
     nome=models.CharField("Nome",max_length=255)
