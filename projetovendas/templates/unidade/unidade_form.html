@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+        <h1 style="margin: 30px">{% if unidade %}Editar Unidade{% else %}Criar Unidade{% endif%}</h1>
+        <div style="margin: 30px">
+        <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" value="Salvar">
+        </form>
+        </div>
+{% endblock %}

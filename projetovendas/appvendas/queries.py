@@ -12,7 +12,7 @@ for unidade in Unidade.objects.all():
 unidades=Unidade.objects.filter(sigla='UN') #Retorna uma lista de Unidades
 print(unidades)
 
-#Consulta todas as unidades cuja a sigla seja lT
+#Consulta todas as unidade cuja a sigla seja lT
 
 
 unidades=Unidade.objects.filter(sigla__iexact='lT') #Retorna uma lista de Unidades
