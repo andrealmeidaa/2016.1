@@ -1,0 +1,34 @@
+
+{% extends 'base.html' %}
+{% block conteudo %}
+<h2>Cargos</h2>
+     <p><a href="{% url 'cargo-new' %}" class="btn btn-primary" >Criar Novo Cargo</a></p>
+    <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'cargo-list' %}">
+      <div class="form-group">
+          <label for="nome_busca">Descrição:</label>
+        <input type="text" id="nome_busca" name="nome_busca" value="{{ nome_busca }}" class="form-control" placeholder="Descrição">
+      </div>
+      <button type="submit" class="btn btn-default">Buscar</button>
+    </form>
+    <table class="table table-hover"> {# Estilo do Bootstrap #}
+
+    <tr>
+        <th>Descrição</th>
+        <th>Salário</th>
+        <th colspan="2">Operações</th>
+    </tr>
+
+    {% for cargo in cargos %}
+        <tr>
+            <td>{{ cargo.descricao }}</td>
+            <td>{{ cargo.salario | floatformat:2 }}</td>
+            <td><a href="{% url 'cargo-update' cargo.pk %}" class="btn btn-primary">Atualizar</a></td>
+            <td><a href="{% url 'cargo-delete' cargo.pk %}" class="btn btn-danger">Deletar</a></td>
+        </tr>
+    {% endfor %}
+
+    </table>
+
+     {% include 'utils/paginacao.html' %} {# Inclui a seção para paginação. Esse arquivo pode ser reutilizado em qualquer view baseada em Lista #}
+
+{% endblock %}

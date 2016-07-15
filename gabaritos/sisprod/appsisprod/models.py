@@ -24,7 +24,7 @@ class Cargo(models.Model):
         return self.descricao
 
     def get_absolute_url(self):
-        return reverse('cargos-update',kwargs={'pk':self.pk})
+        return reverse('cargo-update',kwargs={'pk':self.pk})
 
     class Meta:
         ordering=['descricao']

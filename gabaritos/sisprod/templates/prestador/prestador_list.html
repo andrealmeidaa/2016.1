@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block conteudo %}
+    <script>
+    $(document).ready(function(){
+
+        var csrftoken = $.cookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+        
+        $(".btn-danger").click(function(){
+            var pk=$(this).attr("id");
+            if (confirm('Deseja Realmente Deletar?')){
+                $.ajax({
+                    url:"{% url 'prestador-delete'%}",
+                    data:{pk:pk
+                    },
+                    type:"DELETE",
+                    success: function(response){
+                        alert('Registro Deletado com Sucesso');
+                        window.location.href="{% url 'prestador-list' %}"
+                    }
+
+                });
+            }
+        });
+    });
+
+    </script>
+
+<h2>Prestadores de Serviço</h2>
+    <p><a href="{% url 'prestador-new' %}" class="btn btn-primary" >Criar Novo Prestador</a></p>
+    <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'cargo-list' %}">
+      <div class="form-group">
+          <label for="nome_busca">Prestador:</label>
+        <input type="text" id="nome_busca" name="nome_busca" value="{{ nome_busca }}" class="form-control" placeholder="Nome do Prestador">
+      </div>
+      <button type="submit" class="btn btn-default">Buscar</button>
+    </form>
+<table class="table table-hover">
+  <tr>
+    <th>Nome</th>
+      <th>CPF</th>
+      <th>Telefone</th>
+      <th>Cargo</th>
+      <th colspan="2">Operações</th>
+  </tr>
+    {% for prestador in prestadores %}
+        {% csrf_token %}
+        <tr>
+            <td>{{ prestador.nome }}</td>
+            <td>{{ prestador.cpf }}</td>
+            <td>{{ prestador.telefone }}</td>
+            <td>{{ prestador.cargo }}</td>
+            <td><a href="{% url 'prestador-edit' prestador.pk %}" class="btn btn-primary">Atualizar</a> </td>
+            <td><a href="#" id="{{ prestador.pk }}"  class="btn btn-danger">Deletar</a> </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
