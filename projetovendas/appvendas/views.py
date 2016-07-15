@@ -33,8 +33,8 @@ def unidade_list(request):
 
     dados={'unidades':unidades,'criterio':criterio,'paginator':paginator,'page_obj':unidades}
     return render(request, 'unidade/unidade_list.html', dados)
-def unidade_detail(request, id_unidade):
-    unidade=Unidade.objects.get(id=id_unidade)
+def unidade_detail(request, pk):
+    unidade=Unidade.objects.get(id=pk)
     return render(request, 'unidade/unidade_detail.html', {'unidade':unidade})
 def unidade_new(request):
     if (request.method=="POST"):
