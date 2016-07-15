@@ -56,7 +56,7 @@ def unidade_update(request,pk):
     else:
         form=UnidadeForm(instance=unidade)
         dados={'form':form}
-        return render(request, 'unidade/unidade_list.html', dados)
+        return render(request, 'unidade/unidade_form.html', dados)
 def unidade_delete(request,pk):
     unidade=Unidade.objects.get(id=pk)
     unidade.delete()
