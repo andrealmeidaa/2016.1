@@ -1,4 +1,4 @@
-{% if is_paginated %} {# Verifica se a paginação foi definida na view #}
+ {# Verifica se a paginação foi definida na view #}
   <nav>
     <ul class="pagination"> {# Estilo do Bootstrap, incluido no arquivo base #}
       {% if page_obj.has_previous %} {# Verifica se existe página anterior #}
@@ -36,4 +36,3 @@
       {% endif %}
     </ul>
   </nav>
-{% endif %}

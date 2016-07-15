@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView,DeleteView,UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponseForbidden, HttpResponseRedirect
 from django.contrib import messages
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from appsisprod.forms import *
 from appsisprod.models import *
 # Create your views here.
@@ -26,12 +27,22 @@ def prestador_list(request):
     nome_busca=request.GET.get('nome_busca') #Recupera um parâmetro passado pela requisição do tipo get
 
     if (nome_busca): #Se o parâmetro existir, então busca pelo nome que contenha o texto passado
-        prestadores=PrestadorServico.objects.filter(nome__contains=nome_busca).order_by('nome')
+        prestadores_list=PrestadorServico.objects.filter(nome__contains=nome_busca).order_by('nome')
     else: #Caso contrário lista tudo
-        prestadores = PrestadorServico.objects.all().order_by('nome')
+        prestadores_list = PrestadorServico.objects.all().order_by('nome')
         nome_busca="" #Coloca uma String vazia
+    paginator=Paginator(prestadores_list,3)
+    page=request.GET.get('page')
+    try:
+        prestadores = paginator.page(page) #Tenta recuperar uma página normal
+    except PageNotAnInteger:
+        prestadores = paginator.page(1) #Recupera a primeira página
+    except EmptyPage:
+        prestadores = paginator.page(paginator.num_pages) #Recupera a última página
+
     #Retorna a lista, juntamente com a string utilizada, para que permaneça na tela
-    dados={'prestadores':prestadores,'nome_busca':nome_busca}
+    #Além disso, retorna as informações para paginação
+    dados={'prestadores':prestadores,'nome_busca':nome_busca,'paginator':paginator,'page_obj':prestadores}
     return render(request, 'prestador/prestador_list.html', dados)
 def prestador_new(request):
     if (request.method=="POST"):
@@ -75,7 +86,7 @@ class CargoView(ListView):
     context_object_name = 'cargos' #Nome da variável utilizada dentro do template
 
     def get_queryset(self): #Trata o query set, ou seja, a definição dos dados
-        busca=self.request.GET.get('nome_busca')
+        busca=self.request.GET.get('nome_busca') #Recupera um parâmetro
         if( not busca):
             busca=""
         return self.model.objects.filter(descricao__contains=busca)
