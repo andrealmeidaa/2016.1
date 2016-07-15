@@ -7,13 +7,49 @@ from appvendas.models import *
 
 def home(request):
     return render(request,'base.html')
+
+
 def exibirproduto(request,id_produto):
+
+
     produto=Produto.objects.get(id=id_produto)
     return render(request,'exibirproduto.html',{'produto':produto})
-def listarprodutos(request):
-    produtos=Produto.objects.all().order_by('descricao')
-    lista={'produtos':produtos}
-    return render(request,'produtos.html',lista)
+
+
+def produto_list(request):
+
+    criterio=request.GET.get('criterio')
+
+    if(criterio):
+        produtos=Produto.objects.\
+            filter(descricao__contains=criterio)
+    else:
+        produtos = Produto.objects.all().order_by('descricao')
+        criterio=""
+    dados={'produtos':produtos,'criterio':criterio}
+    return render(request, 'produto/produto_list.html', dados)
+def produto_new(request):
+    if (request.method=="POST"):
+        form=ProdutoForm(request.POST)
+        if(form.is_valid()):
+            form.save()
+            return redirect('produto_list')
+    else:
+        form=ProdutoForm()
+        dados={'form':form}
+        return render(request,'produto/produto_form.html',dados)
+def produto_update(request,pk):
+    produto=Produto.objects.get(id=pk)
+    if (request.method=="POST"):
+        form=ProdutoForm(request.POST,instance=produto)
+        if(form.is_valid()):
+            form.save()
+            return redirect('produto_list')
+    else:
+        form=ProdutoForm(instance=produto)
+        dados={'form':form,'produto':produto}
+        return render(request,'produto/produto_form.html',dados)
+
 def unidade_list(request):
     criterio=request.GET.get('criterio')
     if (criterio):
