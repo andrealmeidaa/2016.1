@@ -62,8 +62,8 @@ vendas=Venda.objects.all().order_by('dataVenda')
 for venda in vendas:
     print("Venda: {0:d} - Vendedor : {1:s} - Cliente : {2:s} - "
           "Data: {3:s} - Total: {4:.2f}".
-          format(venda.id,venda.vendedor.nome,venda.cliente.nome,
-                venda.dataVenda.strftime("%d/%m/%Y"),venda.calculaValorTotal()))
+          format(venda.id, venda.vendedor.nome, venda.cliente.nome,
+                 venda.dataVenda.strftime("%d/%m/%Y"), venda.valorTotal()))
     #Exibe os produtos inseridos
     itensVenda=VendaProduto.objects.filter(venda=venda)
     for item in itensVenda:

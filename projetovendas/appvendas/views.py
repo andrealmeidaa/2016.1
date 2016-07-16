@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from appvendas.forms import *
+from django.forms import formset_factory
 from appvendas.models import *
 # Create your views here.
 
@@ -97,10 +98,14 @@ def unidade_delete(request,pk):
     unidade=Unidade.objects.get(id=pk)
     unidade.delete()
     return redirect('unidade_list')
-def listarvendas(request):
+def venda_list(request):
     vendas=Venda.objects.all()
     lista={'vendas':vendas}
-    return render(request,'vendas.html',lista)
+    return render(request, 'venda/venda_list.html', lista)
+
+def venda_new(request):
+
+
 def listarclientes(request):
     clientes=Cliente.objects.all().order_by('nome')
     lista={'clientes':clientes}

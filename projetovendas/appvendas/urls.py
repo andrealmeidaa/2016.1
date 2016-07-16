@@ -17,7 +17,10 @@ urlpatterns=[
     url(r'^unidade/delete/(?P<pk>\d+)$',unidade_delete,name='unidade_delete'),
 
 
-    url(r'^vendas/$',listarvendas,name='vendas'),
+    url(r'^vendas/$', venda_list, name='venda_list'),
+
+
+
     url(r'^clientes/$',listarclientes,name='clientes'),
     url(r'^clientes/exibir/(\d+)$',exibircliente,name='exibircliente'),
     url(r'^cargos/$',listarcargos,name='cargos'),

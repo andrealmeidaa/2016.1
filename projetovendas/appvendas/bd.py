@@ -49,5 +49,5 @@ item01.save()
 item02=VendaProduto(venda=venda,produto=produto02,quantidade=4)
 item02.save()
 
-print(venda.calculaValorTotal())
+print(venda.valorTotal())
 
