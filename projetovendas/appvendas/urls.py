@@ -17,7 +17,11 @@ urlpatterns=[
     url(r'^unidade/delete/(?P<pk>\d+)$',unidade_delete,name='unidade_delete'),
 
 
-    url(r'^vendas/$', venda_list, name='venda_list'),
+    url(r'^venda/$', venda_list, name='venda_list'),
+    url(r'^venda/new/$',venda_new,name='venda_new'),
+    url(r'venda/update/(?P<pk>\d+)$',venda_update,name='venda_update'),
+    url(r'venda/detail/(?P<pk>\d+)$',venda_detail,name='venda_detail'),
+    url(r'venda/delete/(?P<pk>\d+)$',venda_delete,name='venda_delete'),
 
 
 

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+    {% if venda %}
+        <h2>Editar Venda</h2>
+    {% else %}
+        <h2>Nova Venda</h2>
+    {% endif %}
+    <form method="post">
+    {% csrf_token %}
+    {{ form_venda.as_p }}
+    {{ form_venda_produto.management_form }}
+    {% for form in form_venda_produto %}
+        <br>
+        {{ form.as_table }}
+    {% endfor %}
+     <input type="submit" class="btn btn-primary" value="Salvar">
+    </form>
+{% endblock %}

@@ -4,13 +4,14 @@
     <h2>Vendas</h2>
 
 
-
+     <p><a href="{% url 'venda_new' %}" class="btn btn-primary" >Registrar Nova Venda</a></p>
     <table class="table table-hover">
     <tr>
         <th>Número</th>
         <th>Vendedor</th>
         <th>Cliente</th>
         <th>Valor Total</th>
+        <th colspan="2">Operações</th>
     </tr>
     {% for venda in vendas %}
         <tr>
@@ -18,6 +19,8 @@
         <td>{{ venda.vendedor.nome }}</td>
         <td>{{ venda.cliente.nome }}</td>
         <td>{{ venda.valorTotal }}</td>
+         <td><a href="{% url 'venda_update' venda.pk %}" class="btn btn-primary">Atualizar</a> </td>
+        <td><a href="#" class="btn btn-danger">Excluir</a> </td>
         </tr>
     {% endfor %}
     </table>

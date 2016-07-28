@@ -104,8 +104,43 @@ def venda_list(request):
     return render(request, 'venda/venda_list.html', lista)
 
 def venda_new(request):
+    if (request.method=="POST"):
+        venda_form=VendaForm(request.POST)
+        if (venda_form.is_valid()):
+            venda=venda_form.save(commit=False)
+            venda_formset=VendaFormSet(request.POST,instance=venda)
+            if (venda_formset.is_valid() ):
+                venda_form.save()
+                venda_formset.save()
+                return redirect('venda_list')
+    else:
+        venda_form=VendaForm()
+        venda_formset=VendaFormSet()
+        dados={'form_venda':venda_form,'form_venda_produto':venda_formset}
+    return render(request,'venda/venda_form.html',dados)
 
-
+def venda_update(request,pk):
+    venda=Venda.objects.get(id=pk)
+    if (request.method=="POST"):
+        venda_form=VendaForm(request.POST,instance=venda)
+        if (venda_form.is_valid()):
+            venda=venda_form.save(commit=False)
+            venda_formset=VendaFormSet(request.POST,instance=venda)
+            if(venda_formset.is_valid()):
+                venda_form.save()
+                venda_formset.save()
+                return redirect('venda_list')
+    else:
+        venda_form=VendaForm(instance=venda)
+        venda_formset=VendaFormSet(instance=venda)
+        dados = {'form_venda': venda_form, 'form_venda_produto': venda_formset,'venda':venda}
+        return render(request, 'venda/venda_form.html', dados)
+#TODO Implementar a exibição de detalhes da venda
+def venda_detail(request,pk):
+    pass
+#TODO Implementar a exclusão de uma venda
+def venda_delete(request,pk):
+    pass
 def listarclientes(request):
     clientes=Cliente.objects.all().order_by('nome')
     lista={'clientes':clientes}

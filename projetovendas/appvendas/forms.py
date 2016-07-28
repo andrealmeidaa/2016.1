@@ -14,8 +14,10 @@ class ProdutoForm(ModelForm):
 class VendaForm(ModelForm):
     class Meta:
         model=Venda
+        fields=('vendedor','cliente','dataVenda')
 class VendaProdutoForm(ModelForm):
     class Meta:
         model=VendaProduto
+        fields=('produto','quantidade')
 
-VendaFormSet=inlineformset_factory(Venda,VendaProduto)
+VendaFormSet=inlineformset_factory(Venda,VendaProduto,fields=('produto','quantidade'))
