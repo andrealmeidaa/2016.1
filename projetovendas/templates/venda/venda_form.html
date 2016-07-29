@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
+    <script>
+
+    $(document).ready(function(){
+       $(".datepicker").datepicker();
+    });
+
+    </script>
     {% if venda %}
         <h2>Editar Venda</h2>
     {% else %}

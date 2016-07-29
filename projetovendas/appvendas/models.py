@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 
@@ -59,7 +60,7 @@ class Venda(models.Model):
 class VendaProduto(models.Model):
     venda=models.ForeignKey(Venda,on_delete=models.CASCADE)
     produto=models.ForeignKey(Produto,on_delete=models.PROTECT)
-    quantidade=models.IntegerField("Quantidade")
+    quantidade=models.IntegerField("Quantidade",validators=[MinValueValidator(1,message='O valor deve ser maior do que 0')])
     @property
     def subtotal(self):
         return self.produto.valorUnitario*self.quantidade

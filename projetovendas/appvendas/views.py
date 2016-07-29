@@ -37,8 +37,8 @@ def produto_new(request):
             return redirect('produto_list')
     else:
         form=ProdutoForm()
-        dados={'form':form}
-        return render(request,'produto/produto_form.html',dados)
+    dados={'form':form}
+    return render(request,'produto/produto_form.html',dados)
 def produto_update(request,pk):
     produto=Produto.objects.get(id=pk)
     if (request.method=="POST"):
@@ -48,8 +48,8 @@ def produto_update(request,pk):
             return redirect('produto_list')
     else:
         form=ProdutoForm(instance=produto)
-        dados={'form':form,'produto':produto}
-        return render(request,'produto/produto_form.html',dados)
+    dados={'form':form,'produto':produto}
+    return render(request,'produto/produto_form.html',dados)
 
 def unidade_list(request):
     criterio=request.GET.get('criterio')
@@ -81,8 +81,8 @@ def unidade_new(request):
             return redirect('unidade_list')
     else:
         form=UnidadeForm()
-        dados={'form':form}
-        return render(request, 'unidade/unidade_form.html', dados)
+    dados={'form':form}
+    return render(request, 'unidade/unidade_form.html', dados)
 def unidade_update(request,pk):
     unidade=Unidade.objects.get(id=pk)
     if (request.method=="POST"):
@@ -92,8 +92,8 @@ def unidade_update(request,pk):
             return redirect('unidade_list')
     else:
         form=UnidadeForm(instance=unidade)
-        dados={'form':form}
-        return render(request, 'unidade/unidade_form.html', dados)
+    dados={'form':form}
+    return render(request, 'unidade/unidade_form.html', dados)
 def unidade_delete(request,pk):
     unidade=Unidade.objects.get(id=pk)
     unidade.delete()
@@ -113,10 +113,12 @@ def venda_new(request):
                 venda_form.save()
                 venda_formset.save()
                 return redirect('venda_list')
+        else:
+            venda_formset=VendaFormSet(request.POST)
     else:
         venda_form=VendaForm()
         venda_formset=VendaFormSet()
-        dados={'form_venda':venda_form,'form_venda_produto':venda_formset}
+    dados={'form_venda':venda_form,'form_venda_produto':venda_formset}
     return render(request,'venda/venda_form.html',dados)
 
 def venda_update(request,pk):
@@ -130,11 +132,13 @@ def venda_update(request,pk):
                 venda_form.save()
                 venda_formset.save()
                 return redirect('venda_list')
+        else:
+            venda_formset=VendaFormSet(request.POST,instance=venda)
     else:
         venda_form=VendaForm(instance=venda)
         venda_formset=VendaFormSet(instance=venda)
-        dados = {'form_venda': venda_form, 'form_venda_produto': venda_formset,'venda':venda}
-        return render(request, 'venda/venda_form.html', dados)
+    dados = {'form_venda': venda_form, 'form_venda_produto': venda_formset,'venda':venda}
+    return render(request, 'venda/venda_form.html', dados)
 #TODO Implementar a exibição de detalhes da venda
 def venda_detail(request,pk):
     pass
