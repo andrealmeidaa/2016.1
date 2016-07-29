@@ -1,10 +1,78 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
+
+
+    <script>
+
+        $(document).ready(function(){
+
+            var csrftoken = $.cookie('csrftoken');
+
+            function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+
+
+
+           dialog=$("#dialog-form").dialog({
+               autoOpen:false,
+               resizable:false,
+               heigth:"auto",
+               width:"auto",
+               modal:true,
+               buttons:{
+                   "Excluir":function(){
+                       var pk=$("#rotulo").html();
+                       $.ajax({
+                        url:"{% url 'venda_delete'%}",
+                        data:{pk:pk
+                        },
+                        type:"DELETE",
+                        success: function(response){
+                            alert('Registro Deletado com Sucesso');
+                            window.location.href="{% url 'venda_list' %}";
+                        },
+                        error:function(xhr, status, error){
+                            alert(xhr.status);
+                            dialog.dialog("close");
+                        }
+                    });
+                   },
+                   "Cancelar":function(){
+                       $(this).dialog("close");
+                   }
+               }
+           });
+
+            $(".btn-danger").click(function(){
+                $("#codigovenda").val=$(this).attr("id");
+                $("#rotulo").html($(this).attr("id"));
+                dialog.dialog("open");
+
+            })
+
+        });
+
+    </script>
+
     <h2>Vendas</h2>
 
-
      <p><a href="{% url 'venda_new' %}" class="btn btn-primary" >Registrar Nova Venda</a></p>
+    <div id="dialog-form" title="Excluir Venda">
+        <p>Você Deseja Realmente Excluir a Venda <span id="rotulo"></span>?</p>
+        <input type="hidden" id="codigovenda">
+    </div>
     <table class="table table-hover">
     <tr>
         <th>Número</th>
@@ -20,7 +88,7 @@
         <td>{{ venda.cliente.nome }}</td>
         <td>{{ venda.valorTotal }}</td>
          <td><a href="{% url 'venda_update' venda.pk %}" class="btn btn-primary">Atualizar</a> </td>
-        <td><a href="#" class="btn btn-danger">Excluir</a> </td>
+        <td><a href="#" id="{{ venda.pk }}" class="btn btn-danger">Excluir</a> </td>
         </tr>
     {% endfor %}
     </table>

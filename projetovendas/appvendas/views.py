@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from appvendas.forms import *
 from django.forms import formset_factory
+from django.http.request import QueryDict
 from appvendas.models import *
 # Create your views here.
 
@@ -142,9 +143,13 @@ def venda_update(request,pk):
 #TODO Implementar a exibição de detalhes da venda
 def venda_detail(request,pk):
     pass
-#TODO Implementar a exclusão de uma venda
-def venda_delete(request,pk):
-    pass
+
+def venda_delete(request):
+    if (request.method == "DELETE"):
+        pk = int(QueryDict(request.body).get('pk'))  # Recupera informação que veio dentro da requisição Ajax
+        venda=Venda.objects.get(id=pk)
+        venda.delete()
+    return redirect('venda_list')
 def listarclientes(request):
     clientes=Cliente.objects.all().order_by('nome')
     lista={'clientes':clientes}
