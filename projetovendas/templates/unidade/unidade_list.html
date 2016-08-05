@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% block conteudo %}
     <h2>Unidades</h2>
+
+    {% if messages %}
+        {% for mensagem in messages %}
+            <div class="alert alert-danger">
+            <strong>Erro! </strong> {{ mensagem }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <p><a href="{% url 'unidade_new' %}" class="btn btn-primary" >Criar Nova Unidade</a></p>
     <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'unidade_list' %}">
       <div class="form-group">

@@ -1,9 +1,11 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
+from django.db import IntegrityError
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from appvendas.forms import *
 from django.forms import formset_factory
 from django.http.request import QueryDict
+from django.contrib import messages
 from appvendas.models import *
 # Create your views here.
 
@@ -114,7 +116,11 @@ def unidade_update(request,pk):
     return render(request, 'unidade/unidade_form.html', dados)
 def unidade_delete(request,pk):
     unidade=Unidade.objects.get(id=pk)
-    unidade.delete()
+    try:
+        unidade.delete()
+    except IntegrityError:
+        messages.error(request,'Unidade Vinculado a um Produto')
+        return redirect('unidade_list')
     return redirect('unidade_list')
 def venda_list(request):
     vendas=Venda.objects.all()
