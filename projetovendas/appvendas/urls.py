@@ -7,7 +7,7 @@ urlpatterns=[
     #url(r'^produto/detail/(?P<pk>\d+)$',produto_detail,name='produto_detail'),
     url(r'^produto/new/$',produto_new,name='produto_new'),
     url(r'^produto/update/(?P<pk>\d+)$',produto_update,name='produto_update'),
-    #url(r'^produto/delete/(?P<pk>\d+)$',produto_delete,name='produto_delete'),
+    url(r'^produto/delete/(?P<pk>\d+)$',produto_delete,name='produto_delete'),
 
 
     url(r'^unidade/list$', unidade_list, name='unidade_list'),

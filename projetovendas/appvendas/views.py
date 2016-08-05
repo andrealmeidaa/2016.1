@@ -40,6 +40,7 @@ def produto_new(request):
         form=ProdutoForm()
     dados={'form':form}
     return render(request,'produto/produto_form.html',dados)
+
 def produto_update(request,pk):
     produto=Produto.objects.get(id=pk)
     if (request.method=="POST"):
@@ -51,6 +52,10 @@ def produto_update(request,pk):
         form=ProdutoForm(instance=produto)
     dados={'form':form,'produto':produto}
     return render(request,'produto/produto_form.html',dados)
+def produto_delete(request,pk):
+    produto=Produto.objects.get(id=pk)
+    produto.delete()
+    return redirect('produto_list')
 
 def unidade_list(request):
     criterio=request.GET.get('criterio')
