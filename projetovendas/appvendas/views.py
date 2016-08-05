@@ -28,7 +28,19 @@ def produto_list(request):
     else:
         produtos = Produto.objects.all().order_by('descricao')
         criterio=""
-    dados={'produtos':produtos,'criterio':criterio}
+
+    # Cria o mecanimos de paginação
+    paginator = Paginator(produtos, 3)
+    page = request.GET.get('page')
+    try:
+        produtos = paginator.page(page)
+    except PageNotAnInteger:
+        produtos = paginator.page(1)
+    except EmptyPage:
+        produtos = paginator.page(paginator.num_pages)
+
+    dados={'produtos':produtos,'criterio':criterio,'paginator':paginator
+        ,'page_obj':produtos}
     return render(request, 'produto/produto_list.html', dados)
 def produto_new(request):
     if (request.method=="POST"):
