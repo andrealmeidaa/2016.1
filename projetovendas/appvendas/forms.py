@@ -7,6 +7,7 @@ class UnidadeForm(ModelForm):
        model=Unidade
        fields=('descricao','sigla')
        error_messages={
+           'descricao':{'required':'Informe a Descrição'},
            'sigla':{'required':'Informe a Sigla'},
        }
 

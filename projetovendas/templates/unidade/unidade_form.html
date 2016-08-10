@@ -1,12 +1,32 @@
 {% extends 'base.html' %}
+ {% load widget_tweaks %}
 {% block conteudo %}
         <h1 style="margin: 30px">{% if unidade %}Editar Unidade{% else %}Criar Unidade{% endif%}</h1>
 
         <form method="POST" role="form">
-
+        <div>
         {% csrf_token %}
-        {{ form.as_p }}
+            <div class="form-group"> <label for="{{ form.descricao.id_for_label }}">Descrição:</label>
+            {{ form.descricao | add_class:"form-control" | add_error_class:"error-border" }}
+                {% if form.descricao.errors%}
+                    <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           {{ form.descricao.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group"> <label for="{{ form.sigla.id_for_label }}">Sigla:</label>
+            {{ form.sigla | add_class:"form-control" | add_error_class:"error-border" }}
+                {% if form.sigla.errors%}
+                    <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           {{ form.sigla.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
         <input type="submit" class="btn btn-primary" value="Salvar">
+        </div>
         </form>
 
 {% endblock %}
