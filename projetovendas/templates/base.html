@@ -15,7 +15,7 @@
     <script src="{% static 'jquery-formset/jquery.formset.js' %}" type="javascript"></script>
 </head>
 <body>
-    <h2>Sistema de Vendas</h2>
+    <h2>Sistema de Vendas - Usuário: {{ request.user.first_name }}</h2>
     <nav>
         <a href="{% url 'unidade_list' %}"> Unidades </a>
         <a href="{% url 'cargos' %}"> Cargos</a>
@@ -23,7 +23,9 @@
         <a href="{% url 'clientes' %}"> Clientes</a>
         <a href="{% url 'funcionarios' %}"> Funcionários</a>
         <a href="{% url 'venda_list' %}"> Vendas</a>
-        <a href="{% url 'admin:index' %}"> Cadastros</a>
+        <a href="{% url 'admin:index' %}"> Administração</a>
+        <a href="{% url 'logout' %}">Sair</a>
+
     </nav>
     {% block conteudo %}
         <h3>Bem vindo ao sistema de controle de vendas</h3>
