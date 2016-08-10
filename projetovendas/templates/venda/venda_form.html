@@ -5,6 +5,9 @@
 
     $(document).ready(function(){
        $("#id_dataVenda").datepicker($.datepicker.regional['pt-BR']);
+
+
+
     });
 
     </script>
@@ -18,9 +21,19 @@
     {{ form_venda.as_p }}
     {{ form_venda_produto.management_form }}
     {% for form in form_venda_produto %}
-        <br>
-        {{ form.as_table }}
+        <div class="link-formset">{{ form.as_table }}</div>
+
     {% endfor %}
      <input type="submit" class="btn btn-primary" value="Salvar">
     </form>
+
+    <script>
+
+        $('.link-formset').formset({
+            addText: 'Adicionar Produto',
+            deleteText: 'Remover Produto'
+        });
+
+    </script>
+
 {% endblock %}
