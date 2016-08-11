@@ -88,7 +88,9 @@
         <td>{{ venda.cliente.nome }}</td>
         <td>{{ venda.valorTotal }}</td>
          <td><a href="{% url 'venda_update' venda.pk %}" class="btn btn-primary">Atualizar</a> </td>
-        <td><a href="#" id="{{ venda.pk }}" class="btn btn-danger">Excluir</a> </td>
+            {% if perms.venda.can_delete %}
+                <td><a href="#" id="{{ venda.pk }}" class="btn btn-danger">Excluir</a> </td>
+            {% endif %}
         </tr>
     {% endfor %}
     </table>

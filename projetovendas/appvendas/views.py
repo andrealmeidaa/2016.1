@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.db import IntegrityError
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,permission_required
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from appvendas.forms import *
 from django.forms import formset_factory
@@ -13,6 +13,10 @@ from appvendas.models import *
 @login_required
 def home(request):
     return render(request,'base.html')
+
+@login_required
+def erro_permissao(request):
+    return render(request,'utils/permissao.html')
 
 @login_required
 def produto_list(request):
@@ -39,7 +43,7 @@ def produto_list(request):
     dados={'produtos':produtos,'criterio':criterio,'paginator':paginator
         ,'page_obj':produtos}
     return render(request, 'produto/produto_list.html', dados)
-@login_required
+@permission_required('produto.can_add',login_url='erro_permissao')
 def produto_new(request):
     if (request.method=="POST"):
         form=ProdutoForm(request.POST)
@@ -50,7 +54,7 @@ def produto_new(request):
         form=ProdutoForm()
     dados={'form':form}
     return render(request,'produto/produto_form.html',dados)
-@login_required
+@permission_required('produto.can_change',login_url='erro_permissao')
 def produto_update(request,pk):
     produto=Produto.objects.get(id=pk)
     if (request.method=="POST"):
@@ -62,12 +66,12 @@ def produto_update(request,pk):
         form=ProdutoForm(instance=produto)
     dados={'form':form,'produto':produto}
     return render(request,'produto/produto_form.html',dados)
-@login_required
+@permission_required('produto.can_delete',login_url='erro_permissao')
 def produto_delete(request,pk):
     produto=Produto.objects.get(id=pk)
     produto.delete()
     return redirect('produto_list')
-@login_required
+@permission_required('unidade.can_see',login_url='erro_permissao')
 def unidade_list(request):
     criterio=request.GET.get('criterio')
     if (criterio):
@@ -91,7 +95,7 @@ def unidade_list(request):
 def unidade_detail(request, pk):
     unidade=Unidade.objects.get(id=pk)
     return render(request, 'unidade/unidade_detail.html', {'unidade':unidade})
-@login_required
+@permission_required('unidade.can_add',login_url='erro_permissao')
 def unidade_new(request):
     if (request.method=="POST"):
         form=UnidadeForm(request.POST)
@@ -102,7 +106,7 @@ def unidade_new(request):
         form=UnidadeForm()
     dados={'form':form}
     return render(request, 'unidade/unidade_form.html', dados)
-@login_required
+@permission_required('unidade.can_change',login_url='erro_permissao')
 def unidade_update(request,pk):
     unidade=Unidade.objects.get(id=pk)
     if (request.method=="POST"):
@@ -114,7 +118,7 @@ def unidade_update(request,pk):
         form=UnidadeForm(instance=unidade)
     dados={'form':form}
     return render(request, 'unidade/unidade_form.html', dados)
-@login_required
+@permission_required('unidade.can_delete',login_url='erro_permissao')
 def unidade_delete(request,pk):
     unidade=Unidade.objects.get(id=pk)
     try:
@@ -123,7 +127,7 @@ def unidade_delete(request,pk):
         messages.error(request,'Unidade Vinculado a um Produto')
         return redirect('unidade_list')
     return redirect('unidade_list')
-@login_required
+@permission_required('venda.can_see',login_url='erro_permissao')
 def venda_list(request):
     vendas=Venda.objects.all()
     lista={'vendas':vendas}
