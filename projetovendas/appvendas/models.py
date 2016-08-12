@@ -9,12 +9,14 @@ class Unidade(models.Model):
     def __str__(self):
         return "{0:s}-{1:s}".format(self.descricao,self.sigla)
     class Meta:
-        permissions=(('can_see','Can See unidade'),)
+        permissions=(('view_unidade','Can see unidade'),)
 
 class Cargo(models.Model):
     descricao=models.CharField("Descrição",max_length=150)
     def __str__(self):
         return self.descricao
+    class Meta:
+        permissions=(('view_cargo','Can see cargo'),)
 
 class Pessoa(models.Model):
     nome=models.CharField("Nome",max_length=255)
@@ -27,10 +29,15 @@ class Pessoa(models.Model):
 class Cliente(Pessoa):
     endereco=models.CharField("Endereço",max_length=255)
 
+    class Meta:
+        permissions=(('view_cliente','Can see cliente'),)
 
 class Funcionario(Pessoa):
     matricula=models.CharField("Matrícula",max_length=10,unique=True)
     cargo=models.ForeignKey(Cargo,on_delete=models.PROTECT,verbose_name="Cargo")
+
+    class Meta:
+        permissions=(('view_funcionario','Can see funcionario'),)
 
 class Produto(models.Model):
     descricao=models.CharField("Descrição",max_length=255)
@@ -41,7 +48,7 @@ class Produto(models.Model):
         return self.descricao
 
     class Meta:
-        permissions=(('can_see','Can see produto'),)
+        permissions=(('view_produto','Can see produto'),)
 
 class Venda(models.Model):
     dataVenda=models.DateField("Data da Venda")
@@ -50,7 +57,7 @@ class Venda(models.Model):
     produtos=models.ManyToManyField(Produto,through="VendaProduto")
 
     class Meta:
-        permissions=(('can_see','Can see venda'),)
+        permissions=(('view_venda','Can see venda'),)
 
     def __str__(self):
         return "{0:d}-{1:s}".format(self.id,self.dataVenda.strftime('%d/%m/%Y'))

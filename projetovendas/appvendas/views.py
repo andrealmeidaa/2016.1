@@ -10,15 +10,15 @@ from django.contrib import messages
 from appvendas.models import *
 # Create your views here.
 
-@login_required
+@login_required(login_url='login')
 def home(request):
     return render(request,'base.html')
 
-@login_required
+@login_required(login_url='login')
 def erro_permissao(request):
     return render(request,'utils/permissao.html')
 
-@login_required
+@permission_required('appvendas.view_produto',login_url='erro_permissao')
 def produto_list(request):
 
     criterio=request.GET.get('criterio')
@@ -43,7 +43,8 @@ def produto_list(request):
     dados={'produtos':produtos,'criterio':criterio,'paginator':paginator
         ,'page_obj':produtos}
     return render(request, 'produto/produto_list.html', dados)
-@permission_required('produto.can_add',login_url='erro_permissao')
+
+@permission_required('appvendas.add_produto',login_url='erro_permissao')
 def produto_new(request):
     if (request.method=="POST"):
         form=ProdutoForm(request.POST)
@@ -54,7 +55,8 @@ def produto_new(request):
         form=ProdutoForm()
     dados={'form':form}
     return render(request,'produto/produto_form.html',dados)
-@permission_required('produto.can_change',login_url='erro_permissao')
+
+@permission_required('appvendas.change_produto',login_url='erro_permissao')
 def produto_update(request,pk):
     produto=Produto.objects.get(id=pk)
     if (request.method=="POST"):
@@ -66,12 +68,14 @@ def produto_update(request,pk):
         form=ProdutoForm(instance=produto)
     dados={'form':form,'produto':produto}
     return render(request,'produto/produto_form.html',dados)
-@permission_required('produto.can_delete',login_url='erro_permissao')
+
+@permission_required('appvendas.delete_produto',login_url='erro_permissao')
 def produto_delete(request,pk):
     produto=Produto.objects.get(id=pk)
     produto.delete()
     return redirect('produto_list')
-@permission_required('unidade.can_see',login_url='erro_permissao')
+
+@permission_required('appvendas.view_unidade',login_url='erro_permissao')
 def unidade_list(request):
     criterio=request.GET.get('criterio')
     if (criterio):
@@ -91,11 +95,13 @@ def unidade_list(request):
 
     dados={'unidades':unidades,'criterio':criterio,'paginator':paginator,'page_obj':unidades}
     return render(request, 'unidade/unidade_list.html', dados)
+
 @login_required
 def unidade_detail(request, pk):
     unidade=Unidade.objects.get(id=pk)
     return render(request, 'unidade/unidade_detail.html', {'unidade':unidade})
-@permission_required('unidade.can_add',login_url='erro_permissao')
+
+@permission_required('appvendas.add_unidade',login_url='erro_permissao')
 def unidade_new(request):
     if (request.method=="POST"):
         form=UnidadeForm(request.POST)
@@ -106,7 +112,8 @@ def unidade_new(request):
         form=UnidadeForm()
     dados={'form':form}
     return render(request, 'unidade/unidade_form.html', dados)
-@permission_required('unidade.can_change',login_url='erro_permissao')
+
+@permission_required('appvendas.change_unidade',login_url='erro_permissao')
 def unidade_update(request,pk):
     unidade=Unidade.objects.get(id=pk)
     if (request.method=="POST"):
@@ -118,7 +125,8 @@ def unidade_update(request,pk):
         form=UnidadeForm(instance=unidade)
     dados={'form':form}
     return render(request, 'unidade/unidade_form.html', dados)
-@permission_required('unidade.can_delete',login_url='erro_permissao')
+
+@permission_required('appvendas.delete_unidade',login_url='erro_permissao')
 def unidade_delete(request,pk):
     unidade=Unidade.objects.get(id=pk)
     try:
@@ -127,12 +135,13 @@ def unidade_delete(request,pk):
         messages.error(request,'Unidade Vinculado a um Produto')
         return redirect('unidade_list')
     return redirect('unidade_list')
-@permission_required('venda.can_see',login_url='erro_permissao')
+
+@permission_required('appvendas.view_venda',login_url='erro_permissao')
 def venda_list(request):
     vendas=Venda.objects.all()
     lista={'vendas':vendas}
     return render(request, 'venda/venda_list.html', lista)
-@login_required
+@permission_required('appvendas.add_venda',login_url='erro_permissao')
 def venda_new(request):
     if (request.method=="POST"):
         venda_form=VendaForm(request.POST)
@@ -150,7 +159,7 @@ def venda_new(request):
         venda_formset=VendaFormSet()
     dados={'form_venda':venda_form,'form_venda_produto':venda_formset}
     return render(request,'venda/venda_form.html',dados)
-@login_required
+@permission_required('appvendas.change_venda',login_url='erro_permissao')
 def venda_update(request,pk):
     venda=Venda.objects.get(id=pk)
     if (request.method=="POST"):
@@ -172,34 +181,34 @@ def venda_update(request,pk):
 #TODO Implementar a exibição de detalhes da venda
 def venda_detail(request,pk):
     pass
-@login_required
+@permission_required('appvendas.delete_venda',login_url='erro_permissao')
 def venda_delete(request):
     if (request.method == "DELETE"):
         pk = int(QueryDict(request.body).get('pk'))  # Recupera informação que veio dentro da requisição Ajax
         venda=Venda.objects.get(id=pk)
         venda.delete()
     return redirect('venda_list')
-@login_required
+@login_required(login_url='login')
 def listarclientes(request):
     clientes=Cliente.objects.all().order_by('nome')
     lista={'clientes':clientes}
     return render(request,'clientes.html',lista)
-@login_required
+@login_required(login_url='login')
 def exibircliente(request,idcliente):
     cliente=Cliente.objects.get(id=idcliente)
     contexto={'cliente':cliente}
     return render(request,'exibircliente.html',contexto)
-@login_required
+@login_required(login_url='login')
 def listarcargos(request):
     cargos=Cargo.objects.all().order_by('descricao')
     lista={'cargos':cargos}
     return render(request,'cargos.html',lista)
-@login_required
+@login_required(login_url='login')
 def listarfuncionrios(request):
     funcionarios=Funcionario.objects.all().order_by('nome')
     lista={'funcionarios':funcionarios}
     return render(request,'funcionarios.html',lista)
-@login_required
+@login_required(login_url='login')
 def exibirfuncionario(request,idfuncionario):
     funcionario=Funcionario.objects.get(id=idfuncionario)
     contexto={'funcionario':funcionario}

@@ -4,8 +4,8 @@ from appvendas.views import *
 urlpatterns=[
     url(r'^$',home,name='home'),
 
-    url(r'^login/',login,{'template_name':'utils/login.html'},name='login'),
-    url(r'^logout/$', logout, {'next_page': '/appvendas/'}, name='logout'),
+    url(r'^login/',login,{'template_name':'utils/login.html','redirect_field_name':'home'},name='login'),
+    url(r'^logout/$', logout, {'next_page': 'home'}, name='logout'),
     url(r'^erro_permissao/$',erro_permissao,name='erro_permissao'),
 
 
