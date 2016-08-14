@@ -29,12 +29,22 @@ urlpatterns=[
     url(r'venda/detail/(?P<pk>\d+)$',venda_detail,name='venda_detail'),
     url(r'venda/delete/$',venda_delete,name='venda_delete'),
 
+    url(r'^funcionario/list$', funcionario_list, name='funcionario_list'),
+    url(r'^funcionario/new/$', funcionario_new, name='funcionario_new'),
+    url(r'^funcionario/update/(?P<pk>\d+)$', funcionario_update, name='funcionario_update'),
+    url(r'^funcionario/detail/(?P<pk>\d+)$', funcionario_detail, name='funcionario_detail'),
+    url(r'^funcionario/delete/(?P<pk>\d+)$', funcionario_delete, name='funcionario_delete'),
 
+    url(r'^cliente/list$', cliente_list, name='cliente_list'),
+    url(r'^cliente/detail/(?P<pk>\d+)$', cliente_detail, name='cliente_detail'),
+    url(r'^clientes/new/$', cliente_new, name='cliente_new'),
+    url(r'^clientes/update/(?P<pk>\d+)$', cliente_update, name='cliente_update'),
+    url(r'^clientes/delete/(?P<pk>\d+)$', cliente_delete, name='cliente_delete'),
 
-    url(r'^clientes/$',listarclientes,name='clientes'),
-    url(r'^clientes/exibir/(\d+)$',exibircliente,name='exibircliente'),
-    url(r'^cargos/$',listarcargos,name='cargos'),
-    url(r'^funcionarios/$',listarfuncionrios,name='funcionarios'),
-    url(r'^funcionarios/exibir/(\d+)',exibirfuncionario,name='exibirfuncionario')
+    url(r'^cargo/list$', cargo_list, name='cargo_list'),
+    url(r'^cargo/new/$', cargo_new, name='cargo_new'),
+    url(r'^cargo/update/(?P<pk>\d+)$', cargo_update, name='cargo_update'),
+    url(r'^cargo/delete/(?P<pk>\d+)$', cargo_delete, name='cargo_delete'),
+
 
 ]

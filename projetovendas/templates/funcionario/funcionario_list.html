@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+    <center><h2>Funcionários</h2></center>
+    <hr>
+    <p><a href="{% url 'funcionario_new' %}" class="btn btn-primary" >Criar Novo Funcionário</a></p>
+    <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'funcionario_list' %}">
+      <div class="form-group">
+          <label for="criterio">Descrição:</label>
+        <input type="text" id="criterio" name="criterio" value="{{ criterio }}" class="form-control" placeholder="Descrição">
+      </div>
+      <button type="submit" class="btn btn-default">Buscar</button>
+    </form>
+    <table class="table table-hover">
+  <tr>
+    <th>Nome</th>
+    <th>Matricula</th>
+      <th>Cargo</th>
+      <th colspan="2">Operações</th>
+  </tr>
+    {% for funcionario in funcionarios %}
+        <tr>
+            <td><a href="{% url 'funcionario_detail' funcionario.pk %}"> {{funcionario.nome | upper }}</a></td>
+            <td>{{ funcionario.matricula }}</td>
+            <td>{{ funcionario.cargo.descricao }}</td>
+            <td><a href="{% url 'funcionario_update' funcionario.pk %}" class="btn btn-primary">Atualizar</a> </td>
+            <td><a href="{% url 'funcionario_delete' funcionario.pk %}" class="btn btn-danger">Deletar</a> </td>
+        </tr>
+    {% endfor %}
+</table>
+{% include 'utils/paginacao.html' %}
+{% endblock %}
