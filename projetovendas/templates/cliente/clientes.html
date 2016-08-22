@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+    <center><h2>Clientes</h2></center>
+    <hr>
+    <p><a href="{% url 'cliente_new' %}" class="btn btn-primary" >Cadastrar cliente</a></p>
+    <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'cliente_list' %}">
+      <div class="form-group">
+          <label for="criterio">Descrição:</label>
+        <input type="text" id="criterio" name="criterio" value="{{ criterio }}" class="form-control" placeholder="Descrição">
+      </div>
+      <button type="submit" class="btn btn-default">Buscar</button>
+    </form>
+<table class="table table-hover table-bordered  ">
+    <tr>
+    <th>Nome</th>
+    <th>E-mail</th>
+    <th clospan="2">Operações</th>
+  </tr>
+
+    {% for cliente in clientes %}
+        <tr>
+            <td><a href="{% url 'cliente_detail' cliente.pk %}"> {{ cliente.nome | upper }}</a></td>
+            <td>{{ cliente.email }}</td>
+            <td><a href="{% url 'cliente_update' cliente.pk %}" class="btn btn-primary" >Atualizar</a></td>
+            <td><a href="{% url 'cliente_delete' cliente.pk %}" class="btn btn-danger" >Excluir</a></td>
+        </tr>
+    {% endfor %}
+</table>
+{% include 'utils/paginacao.html' %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+    <center><h2>Dados do Cliente</h2></center>
+    <hr>
+    <div class="list-group">
+    	<a href="#" class="list-group-item active">Nome: {{ cliente.nome}}</a>
+    	<a href="#" class="list-group-item">E-mail: {{cliente.email}}</a>
+    	<a href="#" class="list-group-item">Telefone: {{cliente.telefone}}</a>
+    	<a href="#" class="list-group-item">Endereço: {{cliente.endereco}}</a>
+    </div>
+{% endblock %}

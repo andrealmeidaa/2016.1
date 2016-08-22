@@ -188,28 +188,177 @@ def venda_delete(request):
         venda=Venda.objects.get(id=pk)
         venda.delete()
     return redirect('venda_list')
-@login_required(login_url='login')
-def listarclientes(request):
-    clientes=Cliente.objects.all().order_by('nome')
-    lista={'clientes':clientes}
-    return render(request,'clientes.html',lista)
-@login_required(login_url='login')
-def exibircliente(request,idcliente):
-    cliente=Cliente.objects.get(id=idcliente)
-    contexto={'cliente':cliente}
-    return render(request,'exibircliente.html',contexto)
-@login_required(login_url='login')
-def listarcargos(request):
-    cargos=Cargo.objects.all().order_by('descricao')
-    lista={'cargos':cargos}
-    return render(request,'cargos.html',lista)
-@login_required(login_url='login')
-def listarfuncionrios(request):
-    funcionarios=Funcionario.objects.all().order_by('nome')
-    lista={'funcionarios':funcionarios}
-    return render(request,'funcionarios.html',lista)
-@login_required(login_url='login')
-def exibirfuncionario(request,idfuncionario):
-    funcionario=Funcionario.objects.get(id=idfuncionario)
-    contexto={'funcionario':funcionario}
-    return render(request,'exibirfuncionario.html',contexto)
+
+@permission_required('appvendas.view_funcionario',login_url='erro_permissao')
+def funcionario_list(request):
+    criterio = request.GET.get('criterio')
+    if (criterio):
+        funcionarios = Funcionario.objects.filter(nome__contains=criterio).order_by('nome')
+    else:
+        funcionarios = Funcionario.objects.all().order_by('nome')
+        criterio = ""
+    # Cria o mecanimos de paginação
+    paginator = Paginator(funcionarios, 4)
+    page = request.GET.get('page')
+    try:
+        funcionarios = paginator.page(page)
+    except PageNotAnInteger:
+        funcionarios = paginator.page(1)
+    except EmptyPage:
+        funcionarios = paginator.page(paginator.num_pages)
+
+    dados = {'funcionarios': funcionarios, 'criterio': criterio, 'paginator': paginator, 'page_obj': funcionarios}
+    return render(request, 'funcionario/funcionario_list.html', dados)
+@permission_required('appvendas.view_cliente',login_url='erro_permissao')
+def cliente_list(request):
+    criterio=request.GET.get('criterio')
+    if (criterio):
+        clientes=Cliente.objects.filter(nome__contains=criterio).order_by('nome')
+    else:
+        clientes=Cliente.objects.all().order_by('nome')
+        criterio=""
+    #Cria o mecanimos de paginação
+    paginator=Paginator(clientes,2)
+    page=request.GET.get('page')
+    try:
+        clientes=paginator.page(page)
+    except PageNotAnInteger:
+        clientes=paginator.page(1)
+    except EmptyPage:
+        clientes=paginator.page(paginator.num_pages)
+
+    dados={'clientes':clientes,'criterio':criterio,'paginator':paginator,'page_obj':clientes}
+    return render(request, 'cliente/clientes.html', dados)
+@permission_required('appvendas.view_cliente',login_url='erro_permissao')
+def cliente_detail(request, pk):
+    cliente = Cliente.objects.get(id=pk)
+    return render(request,'cliente/cliente_detail.html', {'cliente':cliente})
+
+@permission_required('appvendas.change_cliente',login_url='erro_permissao')
+def cliente_update(request,pk):
+    cliente=Cliente.objects.get(id=pk)
+    if(request.method=='POST'):
+        form=ClienteForm(request.POST,instance=cliente)
+        if(form.is_valid()):
+            form.save()
+            return redirect('cliente_list')
+    else:
+        form=ClienteForm(instance=cliente)
+        dados={'form':form,'cliente':cliente}
+        return render(request,'cliente/cliente_form.html',dados)
+@permission_required('appvendas.delete_cliente',login_url='erro_permissao')
+def cliente_delete(request,pk):
+    cliente = Cliente.objects.get(id=pk)
+    cliente.delete()
+    return redirect('clientes')
+@permission_required('appvendas.add_cliente',login_url='erro_permissao')
+def cliente_new(request):
+    if(request.method=='POST'):
+        form=ClienteForm(request.POST)
+        if(form.is_valid()):
+            form.save()
+            return redirect('cliente_list')
+    else:
+        form=ClienteForm()
+        dados={'form':form}
+        return render(request,'cliente/cliente_form.html',dados)
+@permission_required('appvendas.view_funcionario',login_url='erro_permissao')
+def funcionario_list(request):
+    criterio=request.GET.get('criterio')
+    if(criterio):
+        funcionarios=Funcionario.objects.filter(nome__contains=criterio)
+    else:
+        funcionarios = Funcionario.objects.all().order_by('nome')
+        criterio=""
+    paginator = Paginator(funcionarios, 2)
+    page = request.GET.get('page')
+    try:
+        funcionarios = paginator.page(page)
+    except PageNotAnInteger:
+        funcionarios = paginator.page(1)
+    except EmptyPage:
+        funcionarios = paginator.page(paginator.num_pages)
+    dados={'funcionarios':funcionarios,'criterio':criterio, 'paginator':paginator, 'page_obj':funcionarios}
+
+    return render(request, 'funcionario/funcionario_list.html', dados)
+@permission_required('appvendas.view_funcionario',login_url='erro_permissao')
+def funcionario_detail(request, pk):
+    funcionario=Funcionario.objects.get(id=pk)
+    return render(request, 'funcionario/funcionario_detail.html', {'funcionario':funcionario})
+@permission_required('appvendas.add_funcionario',login_url='erro_permissao')
+def funcionario_new(request):
+    if (request.method=="POST"):
+        form=FuncionarioForm(request.POST)
+        if (form.is_valid()):
+            form.save()
+            return redirect('funcionario_list')
+    else:
+        form=FuncionarioForm()
+        dados={'form':form}
+        return render(request, 'funcionario/funcionario_form.html', dados)
+@permission_required('appvendas.change_funcionario',login_url='erro_permissao')
+def funcionario_update(request,pk):
+    funcionario=Funcionario.objects.get(id=pk)
+    if (request.method=="POST"):
+        form=FuncionarioForm(request.POST,instance=funcionario)
+        if (form.is_valid()):
+            form.save()
+            return redirect('funcionario_list')
+    else:
+        form=FuncionarioForm(instance=funcionario)
+        dados={'form':form}
+        return render(request, 'funcionario/funcionario_form.html', dados)
+@permission_required('appvendas.delete_funcionario',login_url='erro_permissao')
+def funcionario_delete(request,pk):
+    funcionario=Funcionario.objects.get(id=pk)
+    funcionario.delete()
+    return redirect('funcionario_list')
+
+def cargo_list(request):
+    criterio=request.GET.get('criterio')
+    if (criterio):
+        cargos=Cargo.objects.filter(descricao__contains=criterio).order_by('descricao')
+    else:
+        cargos=Cargo.objects.all().order_by('descricao')
+        criterio=""
+    #Cria o mecanimos de paginação
+    paginator=Paginator(cargos,2)
+    page=request.GET.get('page')
+    try:
+        cargos=paginator.page(page)
+    except PageNotAnInteger:
+        cargos=paginator.page(1)
+    except EmptyPage:
+        cargos=paginator.page(paginator.num_pages)
+
+    dados={'cargos':cargos,'criterio':criterio,'paginator':paginator,'page_obj':cargos}
+    return render(request, 'cargo/cargo_list.html', dados)
+@permission_required('appvendas.add_cargo',login_url='erro_permissao')
+def cargo_new(request):
+    if (request.method=="POST"):
+        form=CargoForm(request.POST)
+        if(form.is_valid()):
+            form.save()
+            return redirect('cargo_list')
+    else:
+        form=CargoForm()
+        dados={'form':form}
+        return render(request,'cargo/cargo_form.html',dados)
+@permission_required('appvendas.change_cargo',login_url='erro_permissao')
+def cargo_update(request,pk):
+    cargo=Cargo.objects.get(id=pk)
+    if (request.method=="POST"):
+        form=CargoForm(request.POST,instance=cargo)
+        if (form.is_valid()):
+            form.save()
+            return redirect('cargo_list')
+    else:
+        form=CargoForm(instance=cargo)
+        dados={'form':form}
+        return render(request, 'cargo/cargo_form.html', dados)
+@permission_required('appvendas.delete_cargo',login_url='erro_permissao')
+def cargo_delete(request,pk):
+    cargo=Cargo.objects.get(id=pk)
+    cargo.delete()
+    return redirect('cargo_list')
+

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+    <center><h2>Cargos</h2></center>
+    <hr>
+<p><a href="{% url 'cargo_new' %}" class="btn btn-primary" >Cadastrar Novo Cargo</a></p>
+<form class="navbar-form navbar-left" role="search" method="get" action="{% url 'cargo_list' %}">
+      <div class="form-group">
+          <label for="criterio">Descrição:</label>
+        <input type="text" id="criterio" name="criterio" value="{{ criterio }}" class="form-control" placeholder="Descrição">
+      </div>
+      <button type="submit" class="btn btn-default">Buscar</button>
+</form>
+<table class="table table-bordered table-hover">
+  <tr>
+    <th>Descrição</th>
+    <th colspan="2">Operações</th>
+  </tr>
+    {% for cargo in cargos %}
+        <tr>
+            <td> {{ cargo.descricao | upper }}</td>
+            <td><a href="{% url 'cargo_update' cargo.pk %}" class="btn btn-primary">Atualizar</a></td>
+            <td><a href="{% url 'cargo_delete' cargo.pk %}" class="btn btn-danger">Deletar</a></td>
+        </tr>
+    {% endfor %}
+</table>
+{% include 'utils/paginacao.html' %}
+{% endblock %}
+
+
